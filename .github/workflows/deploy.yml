@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Deploy to EC2
 
 on:
   push:
@@ -11,18 +11,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Deploy to EC2
+      - name: Deploy application
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            docker --version
             cd ~/myapp || exit
-            docker build -t myapp .
+            git pull origin main
             docker stop myapp || true
             docker rm myapp || true
-            docker run -d --name myapp -p 80:80 myapp
+            docker build -t myapp .
+            docker run -d --name myapp -p 9090:80 myapp
