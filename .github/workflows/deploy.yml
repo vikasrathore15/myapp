@@ -20,18 +20,18 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-  cd ~/myapp || exit
+	     cd ~/myapp || exit
 
-  docker build -t myapp_new .
+	     docker build -t myapp_new .
 
-  docker run -d --name myapp_new -p 9091:80 myapp_new
+	     docker run -d --name myapp_new -p 9091:80 myapp_new
 
-  sleep 5
+	     sleep 5
 
-  docker stop myapp || true
-  docker rm myapp || true
+	     docker stop myapp || true
+	     docker rm myapp || true
 
-  docker rename myapp_new myapp
+	     docker rename myapp_new myapp
 
-  docker run -d --name temp -p 9090:80 myapp
-  docker stop tempx
+	     docker run -d --name temp -p 9090:80 myapp
+	     docker stop tempx
